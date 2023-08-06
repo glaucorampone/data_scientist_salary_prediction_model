@@ -1,25 +1,10 @@
-setwd("C:\\Users\\HP\\Desktop\\Progetti Data Science\\Previsione salari")
-
 data <- read.csv("ds_salaries.csv")
-head(data)
 
-# Eliminate useless features
+# Eliminate salary features
 data$salary_currency <- data$salary <- NULL
 
 # Normalize remote_ratio
 data$remote_ratio <- data$remote_ratio/100
-
-#Your Glauco data frame
-glauco <- data.frame(
-  work_year = 2023,
-  experience_level = "EN",
-  employment_type = "FT",
-  job_title = "Data Scientist",
-  employee_residence = "IT",
-  remote_ratio = 0,
-  company_location = "CH",
-  company_size = "L"
-)
 
 # Store the names of columns to exclude from one-hot encoding
 exclude_columns <- c("remote_ratio", "salary_in_usd")
@@ -30,22 +15,15 @@ cols_to_encode <- setdiff(names(data), exclude_columns)
 # Perform one-hot encoding for each column
 for (col in cols_to_encode) {
   unique_values <- unique(data[[col]])
-  for (val in unique_values) {
+  for (val in unique_values)
     data[paste(col, "_", val, sep = "")] <- ifelse(data[[col]] == val, 1, 0)
-    glauco[paste(col, "_", val, sep = "")] <- ifelse(glauco[[col]] == val, 1, 0)
-  }
 }
 
 # Remove the original columns as they are no longer needed
 data <- data[, !names(data) %in% cols_to_encode]
-glauco <- glauco[, !names(glauco) %in% cols_to_encode]
-
-# View the resulting encoded dataframe
-head(data)
-head(glauco)
 
 # Split the dataset in Training, CV and Test set
-# Set a seed for reproducibility (optional)
+# Set a seed for reproducibility
 set.seed(123)
 
 # Step 1: Shuffle the dataset randomly
@@ -72,14 +50,7 @@ cat("Cross-validation set size:", nrow(cv_set), "\n")
 cat("Test set size:", nrow(test_set), "\n")
 
 # Save
-output_dir <- "Modello Buono"  
 write.csv(train_set, file.path(output_dir, "train_set.csv"), row.names = FALSE)
 write.csv(cv_set, file.path(output_dir, "cv_set.csv"), row.names = FALSE)
 write.csv(test_set, file.path(output_dir, "test_set.csv"), row.names = FALSE)
-write.csv(glauco,file.path(output_dir,"glauco.csv"), row.names = FALSE)
-
-
-
-
-
 
