@@ -66,10 +66,3 @@ plt.ylabel('Salary (USD)')
 plt.legend()
 plt.title('Dataset Visualization')
 plt.show()
-
-
-
-
-
-
-
