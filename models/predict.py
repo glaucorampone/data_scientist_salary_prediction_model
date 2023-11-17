@@ -12,19 +12,16 @@ import matplotlib.pyplot as plt
 train_file_name = "train_set.csv"
 test_file_name = "test_set.csv"
 cv_file_name = "cv_set.csv"
-glauco_file_name = "glauco.csv"
 
 # Join the common path with the specific file names
 test_file_path = os.path.join(common_path, test_file_name)
 cv_file_path = os.path.join(common_path, cv_file_name)
 train_file_path = os.path.join(common_path, train_file_name)
-glauco_file_path = os.path.join(common_path, glauco_file_name)
 
 # Load the test set and cross-validation set into pandas DataFrames
 test_data = pd.read_csv(test_file_path)
 cv_data = pd.read_csv(cv_file_path)
 train_data = pd.read_csv(train_file_path)
-glauco = pd.read_csv(glauco_file_path)
 
 # Separate features (X) and target (y)
 X = train_data.drop(columns=["salary_in_usd"])  # Drop the "salary_in_usd" column to get features
@@ -37,7 +34,6 @@ y_test = test_data["salary_in_usd"]
 # Display the shapes of X and y
 print("Shape of X:", X.shape)
 print("Shape of y:", y.shape)
-print("Shape of glauco:",glauco.shape)
 # X has 259 features!
 
 # Create the model
@@ -63,9 +59,7 @@ plt.title('Training and Validation Loss Over Epochs')
 plt.show()
 
 # Visualize the dataset
-# Assuming you have a specific feature column index you want to plot (e.g., 0 for the first feature)
 feature_column_index = 0
-
 plt.scatter(X[:, feature_column_index], y, label='Training Data')
 plt.xlabel('Feature')
 plt.ylabel('Salary (USD)')
